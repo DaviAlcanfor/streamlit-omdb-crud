@@ -1,7 +1,6 @@
 from model import Movie
 from decorators import db_operation
 
-# All queries as constants
 INSERT = "INSERT INTO movies (title, year, age_group, description, rating, duration, genre) VALUES (%s, %s, %s, %s, %s, %s, %s)"
 SELECT_ALL = "SELECT * FROM movies"
 SELECT = "SELECT * FROM movies WHERE id = %s"
