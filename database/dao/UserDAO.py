@@ -1,5 +1,7 @@
-from model import User
-from decorators import db_operation
+from ..model.User import User
+from util.decorators import db_operation
+
+import pandas as pd
 
 INSERT = "INSERT INTO users (name, email, password, icon) VALUES (%s, %s, %s, %s)"
 SELECT_ALL = "SELECT * FROM users"
@@ -98,7 +100,7 @@ class UserDAO:
             cur.execute(SELECT_ALL)
             rows = cur.fetchall()
             
-            return [User(*row[1:]) for row in rows]
+            return pd.DataFrame([row[1:] for row in rows], columns=["name","email","password","icon"])
     
     
     @db_operation            

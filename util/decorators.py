@@ -1,4 +1,4 @@
-from config import connect
+from util.connection import connect
 from util.log import get_logger
 
 log = get_logger(__name__)
@@ -23,8 +23,8 @@ def db_operation(func):
             log.exception("WRAPPER: Error while database operation.")
             
         finally:
-            if conn:
-                conn.close()
+            if self.conn:
+                self.conn.close()
                 log.info("WRAPPER: Connection closed.")
             
     return wrapper

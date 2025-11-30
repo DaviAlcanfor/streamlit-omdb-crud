@@ -1,5 +1,5 @@
-from model import UserMovie
-from decorators import db_operation
+from ..model.UserMovie import UserMovie
+from util.decorators import db_operation
 
 INSERT = "INSERT INTO user_movies (user_id, movie_id, rating, favorite, watched, to_watch) VALUES (%s, %s, %s, %s, %s, %s)"
 SELECT_ALL = "SELECT * FROM user_movies"

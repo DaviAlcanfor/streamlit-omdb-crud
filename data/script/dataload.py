@@ -1,7 +1,7 @@
 import os, random, time
 from dotenv import load_dotenv
 
-from database.config import connect
+from util.connection import connect
 from util.data import get_api_data, validate_float, validate_int
 from util.log import get_logger
 
