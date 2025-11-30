@@ -1,5 +1,5 @@
 from model import Movie
-from database.config import connect
+from decorators import db_operation
 
 # All queries as constants
 INSERT = "INSERT INTO movies (title, year, age_group, description, rating, duration, genre) VALUES (%s, %s, %s, %s, %s, %s, %s)"
@@ -10,8 +10,10 @@ UPDATE = "UPDATE movies SET title=%s, year=%s, age_group=%s, description=%s,rati
 
 class MovieDAO:
     def __init__(self):
-        pass
+        self.conn = None
     
+    
+    @db_operation
     def create(self, movie: Movie):
         """
         Creates a new movie and stores it into database
@@ -19,11 +21,7 @@ class MovieDAO:
         Args:
             movie: Movie object
         """
-        
-        conn = connect()
-        
-        with conn.cursor() as cur:
-            
+        with self.conn.cursor() as cur:
             cur.execute(
                 INSERT, 
                 (
@@ -36,10 +34,8 @@ class MovieDAO:
                  movie.genre
                 )
             )
-            conn.commit()
-        conn.close()
     
-            
+    @db_operation 
     def delete(self, id: int):
         """
         Deletes a movie from database based on the receiving id
@@ -47,16 +43,12 @@ class MovieDAO:
         Args:
             id: int
         """
-        conn = connect()
-        
-        with conn.cursor() as cur:
-            
+        with self.conn.cursor() as cur:
             cur.execute( DELETE, [id])
-            conn.commit()
-        conn.close()
+            
 
             
-    
+    @db_operation
     def get(self, id: int):
         """
         Gets a movie based upon the received ID
@@ -67,18 +59,16 @@ class MovieDAO:
         Returns:
             Movie object        
         """
-        conn = connect()
         
-        with conn.cursor() as cur:
+        with self.conn.cursor() as cur:
             
             cur.execute( SELECT, [id])
             row = cur.fetchone()
             
             return Movie(*row)
-        conn.close()
 
 
-
+    @db_operation
     def get_all(self):
         """
         Gets all movies from the database
@@ -86,18 +76,15 @@ class MovieDAO:
         Returns:
             list of Movie objects
         """
-        
-        conn = connect()
-        
-        with conn.cursor() as cur:
+        with self.conn.cursor() as cur:
             
             cur.execute(SELECT_ALL)
             rows = cur.fetchall()
             
             return [Movie(*row[1:]) for row in rows]
-        conn.close()
     
-                
+    
+    @db_operation            
     def update(self, id: int, movie: Movie):
         """
         Updates a movie in the database based on the receiving id
@@ -106,10 +93,7 @@ class MovieDAO:
             id: int
             movie: Movie object
         """
-        conn = connect()
-        
-        with conn.cursor() as cur:
-            
+        with self.conn.cursor() as cur:
             cur.execute(
                 UPDATE,
                 (
@@ -123,5 +107,3 @@ class MovieDAO:
                     id
                 )
             )
-            conn.commit()
-        conn.close()
