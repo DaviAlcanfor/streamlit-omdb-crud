@@ -4,3 +4,6 @@ class User:
         self.email = email
         self.password = password
         self.icon = icon
+        
+    def __str__(self):
+        return f"{self.name}, {self.email}, {self.password}, {self.icon}"

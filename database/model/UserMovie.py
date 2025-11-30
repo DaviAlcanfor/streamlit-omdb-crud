@@ -6,3 +6,6 @@ class UserMovie:
         self.favorite = favorite
         self.watched = watched
         self.to_watch = to_watch
+
+    def __str__(self):
+        return f"{self.user_id}, {self.movie_id}, {self.rating}, {self.favorite}, {self.watched}, {self.to_watch}"
