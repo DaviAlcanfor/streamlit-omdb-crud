@@ -1,15 +1,31 @@
 from config import connect
+from util.log import get_logger
 
-def with_connection(func):
-    """Starts a connection and closes it after the function call"""
+log = get_logger(__name__)
+
+def db_operation(func):
+    """Takes care of starting and closing a connection and also handling the operation exceptions"""
     
     def wrapper(self, *args, **kwargs):
         
-        conn = connect()
         try:
-            self.conn = conn
-            return func(self, *args, **kwargs)
+            conn = connect()
+            self.conn = conn   
+            log.info("WRAPPER: Connection started.")
+            
+            result =  func(self, *args, **kwargs)
+            conn.commit()
+            log.info("Operation commited.")
+            
+            return result
 
+        except Exception:
+            log.exception("WRAPPER: Error while database operation.")
+            
         finally:
-            conn.close()
+            if conn:
+                conn.close()
+                log.info("WRAPPER: Connection closed.")
+            
     return wrapper
+    
