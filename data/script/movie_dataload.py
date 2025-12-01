@@ -5,6 +5,7 @@ from util.connection import connect
 from util.data import get_api_data, validate_float, validate_int
 from util.log import get_logger
 
+
 load_dotenv()
 log = get_logger(__name__)
 

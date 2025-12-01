@@ -3,12 +3,14 @@ from util.decorators import db_operation
 
 import pandas as pd
 
-INSERT = "INSERT INTO users (name, email, password, icon) VALUES (%s, %s, %s, %s)"
-SELECT_ALL = "SELECT * FROM users"
-SELECT = "SELECT * FROM users WHERE id = %s"
-SELECT_BY_EMAIL = "SELECT * FROM users WHERE email = %s"
-DELETE = "DELETE FROM users WHERE id = %s"
-UPDATE = "UPDATE users SET name=%s, email=%s, password=%s, icon=%s WHERE id=%s"
+COLUMNS = ["name","icon","email","password"]
+
+INSERT = "INSERT INTO user_client (name, email, password, icon) VALUES (%s, %s, %s, %s)"
+SELECT_ALL = "SELECT * FROM user_client"
+SELECT = "SELECT * FROM user_client WHERE id = %s"
+SELECT_BY_EMAIL = "SELECT * FROM user_client WHERE email = %s"
+DELETE = "DELETE FROM user_client WHERE id = %s"
+UPDATE = "UPDATE user_client SET name=%s, email=%s, password=%s, icon=%s WHERE id=%s"
 
 class UserDAO:
     def __init__(self):
@@ -90,7 +92,7 @@ class UserDAO:
     @db_operation
     def get_all(self):
         """
-        Gets all users from the database
+        Gets all user_client from the database
 
         Returns:
             list of User objects
@@ -100,7 +102,7 @@ class UserDAO:
             cur.execute(SELECT_ALL)
             rows = cur.fetchall()
             
-            return pd.DataFrame([row[1:] for row in rows], columns=["name","email","password","icon"])
+            return pd.DataFrame([row[1:] for row in rows], columns=COLUMNS)
     
     
     @db_operation            
