@@ -12,7 +12,7 @@ MOVIE_COLUMNS = [p for p in inspect.signature(Movie.__init__).parameters if p !=
 USER_COLUMNS = [p for p in inspect.signature(User.__init__).parameters if p != 'self']
 
 MOVIES_IN_DATABASE = "SELECT COUNT(*) FROM movies"
-USERS_IN_DATABASE = "SELECT COUNT(*) FROM users"
+USERS_IN_DATABASE = "SELECT COUNT(*) FROM user_client"
 TOP_RATED_MOVIES = """SELECT * FROM movies ORDER BY rating DESC LIMIT 3"""
 MOST_WATCHED_MOVIES = "SELECT m.* FROM movies m JOIN user_movies um ON m.id = um.movie_id WHERE um.watched = TRUE GROUP BY m.id ORDER BY COUNT(um.movie_id) DESC LIMIT 3"
 
@@ -32,7 +32,7 @@ class MainDAO:
             cur.execute(MOVIES_IN_DATABASE)
             result = cur.fetchone()
             return result[0]
-        
+    
     @db_operation
     def get_users_count(self) -> int:
         """

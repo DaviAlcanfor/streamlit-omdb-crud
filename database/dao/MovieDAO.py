@@ -55,7 +55,6 @@ class MovieDAO:
             log.info(f"Deleted movie with id {id}")
             
 
-            
     @db_operation
     def get(self, id: int) -> pd.DataFrame:
         """
@@ -75,7 +74,7 @@ class MovieDAO:
             
             return pd.DataFrame(row, columns=COLUMNS)
 
-
+    
     @db_operation
     def get_all(self) -> pd.DataFrame:
         """
